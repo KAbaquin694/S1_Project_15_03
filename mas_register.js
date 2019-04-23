@@ -28,11 +28,16 @@
 
 */
 
-//This section of code adds an event listener that loads an anonymous function when the browser loads. The anonymous function calls the 'calcCart' function & runs 4 document methods.
+//This section of code adds an event listener that loads an anonymous function when the browser loads. The anonymous function calls the 'calcCart' function & runs 9 document methods.
 window.addEventListener("load", function () {
       calcCart();
       document.getElementById("regSubmit").onclick = sessionTest;
-      document.querySelectorAll("#fnbox", "#InBox", "#groupBox", "#mailBox", "#phoneBox", "#banquetBox").onblur = calcCart;
+      document.querySelector("#fnbox").onblur = calcCart;
+      document.querySelector("#InBox").onblur = calcCart;
+      document.querySelector("#groupBox").onblur = calcCart;
+      document.querySelector("#mailBox").onblur = calcCart;
+      document.querySelector("#phoneBox").onblur = calcCart;
+      document.querySelector("#banquetBox").onblur = calcCart;
       document.getElementById("sessionBox").onchange = calcCart;
       document.getElementById("checkBox").onclick = calcCart;
 });
@@ -46,7 +51,7 @@ function sessionTest() {
       }
 }
 
-//
+//This function is responsible for calculating the cost of registration & storing the user's information into the session storage via 'if' statements & document methods.
 function calcCart() {
       var confName = "" + document.regForm.firstName.value + " " + document.regForm.lastName.value + "";
       var confGroup = document.regForm.group.value;
@@ -54,9 +59,34 @@ function calcCart() {
       var confPhone = document.regForm.phoneNumber.value;
       var confBanquet = document.regForm.banquetGuests.value;
       var confBanquetCost = confBanquet * 55;
-      if (sessionBox[i] !== -1) {
-            // var confSession = ;
+      //This section executes two different blocks of code depending if the codition is met or not.
+      if (sessionBox.selecedIndex !== -1) {
+            var confSession = sessionBox[sessionBox.selectedIndex].text;
+            var confSessionCost = sessionBox[sessionBox.selectedIndex].value;
       } else {
-
+            var confSession = "";
+            var confSessionCost = 0;
       }
+      if (document.getElementById("mediaCB").checked === true) {
+            var confPack = "yes";
+            var confPackCost = 115;
+      } else {
+            var confPack = "no";
+            var confPackCost = 0;
+      }
+      var confTotal = parseFloat(confSessionCost) + parseFloat(confBanquetCost) + parseFloat(confPackCost);
+      //This line of code calls the 'writeSessionValues' function.
+      writeSessionValues(confName, confGroup, confMail, confPhone, confSession, confBanquet, confPack, confTotal);
+}
+
+//This function sets the 'textContent' of the various 'span' elements to their respectively. 
+function writeSessionValues(confName, confGroup, confMail, confPhone, confSession, confBanquet, confPack, confTotal) {
+      document.getElementById("regName").textContent = confName;
+      document.getElementById("regGroup").textContent = confGroup;
+      document.getElementById("regEmail").textContent = confMail;
+      document.getElementById("regPhone").textContent = confPhone;
+      document.getElementById("regSession").textContent = confSession;
+      document.getElementById("regBanquet").textContent = confBanquet;
+      document.getElementById("regPack").textContent = confPack;
+      document.getElementById("regTotal").textContent = "$" + confTotal + "";
 }
