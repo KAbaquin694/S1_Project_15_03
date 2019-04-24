@@ -32,14 +32,14 @@
 window.addEventListener("load", function () {
       calcCart();
       document.getElementById("regSubmit").onclick = sessionTest;
-      document.querySelector("#fnbox").onblur = calcCart;
-      document.querySelector("#InBox").onblur = calcCart;
-      document.querySelector("#groupBox").onblur = calcCart;
-      document.querySelector("#mailBox").onblur = calcCart;
-      document.querySelector("#phoneBox").onblur = calcCart;
-      document.querySelector("#banquetBox").onblur = calcCart;
+      document.getElementById("fnBox").onblur = calcCart;
+      document.getElementById("lnBox").onblur = calcCart;
+      document.getElementById("groupBox").onblur = calcCart;
+      document.getElementById("mailBox").onblur = calcCart;
+      document.getElementById("phoneBox").onblur = calcCart;
+      document.getElementById("banquetBox").onblur = calcCart;
       document.getElementById("sessionBox").onchange = calcCart;
-      document.getElementById("checkBox").onclick = calcCart;
+      document.getElementById("mediaCB").onclick = calcCart;
 });
 
 //This block of code creates the 'sessionTest' function. Inside the function is an if statement that creates a custom validity message if the user has not put in the correct information.
@@ -53,40 +53,44 @@ function sessionTest() {
 
 //This function is responsible for calculating the cost of registration & storing the user's information into the session storage via 'if' statements & document methods.
 function calcCart() {
-      var confName = "" + document.regForm.firstName.value + " " + document.regForm.lastName.value + "";
-      var confGroup = document.regForm.group.value;
-      var confMail = document.regForm.email.value;
-      var confPhone = document.regForm.phoneNumber.value;
-      var confBanquet = document.regForm.banquetGuests.value;
-      var confBanquetCost = confBanquet * 55;
+      sessionStorage.setItem("confName", document.getElementById("fnBox").value + " " + document.getElementById("lnBox").value);
+      sessionStorage.setItem("confGroup", document.getElementById("groupBox").value);
+      sessionStorage.setItem("confMail", document.getElementById("mailBox").value);
+      sessionStorage.setItem("confPhone", document.getElementById("phoneBox").value);
+      sessionStorage.setItem("confBanquet", document.getElementById("banquetBox").value);
+      sessionStorage.setItem("confBanquetCost", sessionStorage.getItem("banquetBox") * 55);
       //This section executes two different blocks of code depending if the codition is met or not.
       if (sessionBox.selecedIndex !== -1) {
-            var confSession = sessionBox[sessionBox.selectedIndex].text;
-            var confSessionCost = sessionBox[sessionBox.selectedIndex].value;
+            sessionStorage.setItem("confSession", sessionBox[sessionBox.selectedIndex].text);
+            sessionStorage.setItem("confSessionCost", sessionBox[sessionBox.selectedIndex].value);
+            // sessionStorage.setItem("confSession", "");
+            // sessionStorage.setItem("confSessionCost", 115);
       } else {
-            var confSession = "";
-            var confSessionCost = 0;
+            sessionStorage.setItem("confSession", "");
+            sessionStorage.setItem("confSessionCost", 0);
       }
       if (document.getElementById("mediaCB").checked === true) {
-            var confPack = "yes";
-            var confPackCost = 115;
+            sessionStorage.setItem("confPack", "yes");
+            sessionStorage.setItem("confPackCost", 115);
       } else {
-            var confPack = "no";
-            var confPackCost = 0;
+            sessionStorage.setItem("confPack", "no");
+            sessionStorage.setItem("confPackCost", 0);
       }
-      var confTotal = parseFloat(confSessionCost) + parseFloat(confBanquetCost) + parseFloat(confPackCost);
+      sessionStorage.setItem("confTotal", parseFloat(sessionStorage.getItem("confSessionCost")) + parseFloat(sessionStorage.getItem("confBanquetCost")) + parseFloat(sessionStorage.getItem("confPackCost")));
+
+      console.log(sessionStorage.getItem("confSessionCost"));
       //This line of code calls the 'writeSessionValues' function.
-      writeSessionValues(confName, confGroup, confMail, confPhone, confSession, confBanquet, confPack, confTotal);
+      writeSessionValues();
 }
 
-//This function sets the 'textContent' of the various 'span' elements to their respectively. 
-function writeSessionValues(confName, confGroup, confMail, confPhone, confSession, confBanquet, confPack, confTotal) {
-      document.getElementById("regName").textContent = confName;
-      document.getElementById("regGroup").textContent = confGroup;
-      document.getElementById("regEmail").textContent = confMail;
-      document.getElementById("regPhone").textContent = confPhone;
-      document.getElementById("regSession").textContent = confSession;
-      document.getElementById("regBanquet").textContent = confBanquet;
-      document.getElementById("regPack").textContent = confPack;
-      document.getElementById("regTotal").textContent = "$" + confTotal + "";
+//This function sets the 'textContent' of the various 'span' elements to their respective variables. 
+function writeSessionValues() {
+      document.getElementById("regName").textContent = sessionStorage.getItem("confName");
+      document.getElementById("regGroup").textContent = sessionStorage.getItem("confGroup");
+      document.getElementById("regEmail").textContent = sessionStorage.getItem("confMail");
+      document.getElementById("regPhone").textContent = sessionStorage.getItem("confPhone");
+      document.getElementById("regSession").textContent = sessionStorage.getItem("confSession");
+      document.getElementById("regBanquet").textContent = sessionStorage.getItem("confBanquet");
+      document.getElementById("regPack").textContent = sessionStorage.getItem("confPack");
+      document.getElementById("regTotal").textContent = "$" + sessionStorage.getItem("confTotal");
 }
