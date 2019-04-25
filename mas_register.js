@@ -28,7 +28,7 @@
 
 */
 
-//This section of code adds an event listener that loads an anonymous function when the browser loads. The anonymous function calls the 'calcCart' function & runs 9 document methods.
+//This section of code adds an event listener that loads an anonymous function when the browser loads. The anonymous function calls the 'calcCart' function & grabs 9 input elements with varying ids.
 window.addEventListener("load", function () {
       calcCart();
       document.getElementById("regSubmit").onclick = sessionTest;
@@ -44,46 +44,49 @@ window.addEventListener("load", function () {
 
 //This block of code creates the 'sessionTest' function. Inside the function is an if statement that creates a custom validity message if the user has not put in the correct information.
 function sessionTest() {
-      if (sessionBox[i] !== -1) {
+      var sessionBox = document.getElementById("sessionBox");
+      if (sessionBox.selectedIndex !== -1) {
             sessionBox.setCustomValidity("Select a Session Package");
       } else {
             sessionBox.setCustomValidity("");
       }
 }
 
-//This function is responsible for calculating the cost of registration & storing the user's information into the session storage via 'if' statements & document methods.
+//This function is responsible for calculating the cost of registration & storing the user's information into the session storage via 'if' statements & session storage properties.
 function calcCart() {
       sessionStorage.setItem("confName", document.getElementById("fnBox").value + " " + document.getElementById("lnBox").value);
       sessionStorage.setItem("confGroup", document.getElementById("groupBox").value);
       sessionStorage.setItem("confMail", document.getElementById("mailBox").value);
       sessionStorage.setItem("confPhone", document.getElementById("phoneBox").value);
       sessionStorage.setItem("confBanquet", document.getElementById("banquetBox").value);
-      sessionStorage.setItem("confBanquetCost", sessionStorage.getItem("banquetBox") * 55);
+      sessionStorage.setItem("confBanquetCost", banquetBox * 55);
+      var confBanquetCost = banquetBox * 55;
+      var sessionBox = document.getElementById("sessionBox");
+      console.log(sessionBox);
       //This section executes two different blocks of code depending if the codition is met or not.
-      if (sessionBox.selecedIndex !== -1) {
-            sessionStorage.setItem("confSession", sessionBox[sessionBox.selectedIndex].text);
+      if (sessionBox.selectedIndex !== -1) {
+            console.log(sessionBox.innerText);
+            sessionStorage.setItem("confSession", sessionBox[sessionBox.selectedIndex].innerText);
             sessionStorage.setItem("confSessionCost", sessionBox[sessionBox.selectedIndex].value);
-            // sessionStorage.setItem("confSession", "");
-            // sessionStorage.setItem("confSessionCost", 115);
       } else {
             sessionStorage.setItem("confSession", "");
             sessionStorage.setItem("confSessionCost", 0);
       }
-      if (document.getElementById("mediaCB").checked === true) {
+      if (document.getElementById("mediaCB").checked == true) {
             sessionStorage.setItem("confPack", "yes");
             sessionStorage.setItem("confPackCost", 115);
       } else {
             sessionStorage.setItem("confPack", "no");
             sessionStorage.setItem("confPackCost", 0);
       }
-      sessionStorage.setItem("confTotal", parseFloat(sessionStorage.getItem("confSessionCost")) + parseFloat(sessionStorage.getItem("confBanquetCost")) + parseFloat(sessionStorage.getItem("confPackCost")));
+      sessionStorage.setItem("confTotal", parseFloat(confSessionCost) + parseFloat(confBanquetCost) + parseFloat(confPackCost));
 
       console.log(sessionStorage.getItem("confSessionCost"));
       //This line of code calls the 'writeSessionValues' function.
       writeSessionValues();
 }
 
-//This function sets the 'textContent' of the various 'span' elements to their respective variables. 
+//This function sets the 'textContent' of the various 'span' elements to their respective session storage ids. 
 function writeSessionValues() {
       document.getElementById("regName").textContent = sessionStorage.getItem("confName");
       document.getElementById("regGroup").textContent = sessionStorage.getItem("confGroup");
