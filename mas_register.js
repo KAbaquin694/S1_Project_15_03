@@ -45,7 +45,7 @@ window.addEventListener("load", function () {
 //This block of code creates the 'sessionTest' function. Inside the function is an if statement that creates a custom validity message if the user has not put in the correct information.
 function sessionTest() {
       var sessionBox = document.getElementById("sessionBox");
-      if (sessionBox.selectedIndex !== -1) {
+      if (sessionBox.selectedIndex === -1) {
             sessionBox.setCustomValidity("Select a Session Package");
       } else {
             sessionBox.setCustomValidity("");
@@ -60,25 +60,30 @@ function calcCart() {
       sessionStorage.setItem("confPhone", document.getElementById("phoneBox").value);
       sessionStorage.setItem("confBanquet", document.getElementById("banquetBox").value);
       sessionStorage.setItem("confBanquetCost", banquetBox * 55);
+      var banquetBox = document.getElementById("banquetBox").value;
       var confBanquetCost = banquetBox * 55;
       var sessionBox = document.getElementById("sessionBox");
-      console.log(sessionBox);
       //This section executes two different blocks of code depending if the codition is met or not.
       if (sessionBox.selectedIndex !== -1) {
             console.log(sessionBox.innerText);
             sessionStorage.setItem("confSession", sessionBox[sessionBox.selectedIndex].innerText);
             sessionStorage.setItem("confSessionCost", sessionBox[sessionBox.selectedIndex].value);
+            var confSessionCost = sessionBox[sessionBox.selectedIndex].value;
       } else {
             sessionStorage.setItem("confSession", "");
             sessionStorage.setItem("confSessionCost", 0);
+            var confSessionCost = 0;
       }
       if (document.getElementById("mediaCB").checked == true) {
             sessionStorage.setItem("confPack", "yes");
             sessionStorage.setItem("confPackCost", 115);
+            var confPackCost = 115;
       } else {
             sessionStorage.setItem("confPack", "no");
             sessionStorage.setItem("confPackCost", 0);
+            var confPackCost = 0;
       }
+      //This line of code calculates the total amount of the purhcase.
       sessionStorage.setItem("confTotal", parseFloat(confSessionCost) + parseFloat(confBanquetCost) + parseFloat(confPackCost));
 
       console.log(sessionStorage.getItem("confSessionCost"));
