@@ -24,7 +24,7 @@
 //This line of code loads the function 'writeSessionValues' along with the browser widow.
 window.addEventListener("load", writeSessionValues);
 
-//This function sets the 'textContent' of the various 'span' elements to their respective variables. 
+//This function sets the 'textContent' of the various 'span' elements to their respective session storage ids.
 function writeSessionValues() {
       document.getElementById("regName").textContent = sessionStorage.getItem("confName");
       document.getElementById("regGroup").textContent = sessionStorage.getItem("confGroup");
@@ -33,5 +33,5 @@ function writeSessionValues() {
       document.getElementById("regSession").textContent = sessionStorage.getItem("confSession");
       document.getElementById("regBanquet").textContent = sessionStorage.getItem("confBanquet");
       document.getElementById("regPack").textContent = sessionStorage.getItem("confPack");
-      document.getElementById("regTotal").textContent = sessionStorage.getItem("confTotal");
+      document.getElementById("regTotal").textContent = "$" + sessionStorage.getItem("confTotal");
 }
